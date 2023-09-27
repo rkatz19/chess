@@ -16,7 +16,7 @@ class ReturnPiece {
     }
 
     // Enables movement for other pieces
-    public void move(String destination) {
+    public void checkSpaces(String destination) {
 
     }
 

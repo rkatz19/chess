@@ -1,7 +1,7 @@
 package chess;
 
-public class Queen extends ReturnPiece {
-    public Queen (PieceType type, PieceFile file, int rank) {
+public class King extends ReturnPiece {
+    public King (PieceType type, PieceFile file, int rank) {
         super(type, file, rank);
     }
 
