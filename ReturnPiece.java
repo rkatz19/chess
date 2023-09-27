@@ -9,6 +9,17 @@ class ReturnPiece {
 	PieceFile pieceFile;
 	int pieceRank;  // 1..8
 
+    public ReturnPiece(PieceType pieceType, PieceFile pieceFile, int pieceRank) {
+        this.pieceType = pieceType;
+        this.pieceFile = pieceFile;
+        this.pieceRank = pieceRank;
+    }
+
+    // Enables movement for other pieces
+    public void move(String destination) {
+
+    }
+
 	public String toString() {
 		return ""+pieceFile+pieceRank+":"+pieceType;
 	}
