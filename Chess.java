@@ -22,9 +22,16 @@ public class Chess {
 	 */
 	public static ReturnPlay play(String move) {
 
-		String start = move.substring(0, 2);
-		String end = move.substring(3, 5);
-		
+		PieceFile startPieceFile = PieceFile.(move.substring(0, 1));
+		int startPieceRank = Integer.parseInt(move.substring(1, 2));;
+
+		PieceFile endPieceFile = move.substring(0, 2);
+		int endPieceRank = Integer.parseInt(move.substring(4, 5));;
+
+		ReturnPiece currentPiece = null;
+		for (int i = 0; i < rp.piecesOnBoard.size(); i++) {
+			if (rp.piecesOnBoard.get(i))
+		}
 		/* FOLLOWING LINE IS A PLACEHOLDER TO MAKE COMPILER HAPPY */
 		/* WHEN YOU FILL IN THIS METHOD, YOU NEED TO RETURN A ReturnPlay OBJECT */
 		return rp;

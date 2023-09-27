@@ -15,4 +15,7 @@ class ReturnPlay {
 		piecesOnBoard = updatedBoard;
 	}
 
+	void updateMessage(Message message) {
+		
+	}
 }
