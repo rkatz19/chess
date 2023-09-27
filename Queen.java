@@ -8,4 +8,4 @@ public class Queen extends ReturnPiece {
     public void checkSpaces (String destination) {
 
     }
-}
+} 
