@@ -22,10 +22,10 @@ public class Chess {
 	 */
 	public static ReturnPlay play(String move) {
 
-		PieceFile startPieceFile = PieceFile.(move.substring(0, 1));
+		PieceFile endPieceFile = PieceFile.values()[move.charAt(0) - 'a'];
 		int startPieceRank = Integer.parseInt(move.substring(1, 2));;
 
-		PieceFile endPieceFile = move.substring(0, 2);
+		PieceFile startPieceFile = PieceFile.values()[move.charAt(3) - 'a'];
 		int endPieceRank = Integer.parseInt(move.substring(4, 5));;
 
 		ReturnPiece currentPiece = null;
