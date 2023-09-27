@@ -10,4 +10,9 @@ class ReturnPlay {
 	
 	ArrayList<ReturnPiece> piecesOnBoard;
 	Message message;
+
+	void updateBoard(ArrayList<ReturnPiece> updatedBoard) {
+		piecesOnBoard = updatedBoard;
+	}
+
 }
