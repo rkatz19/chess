@@ -6,6 +6,10 @@ public class Knight extends ReturnPiece {
     }
 
     public boolean checkSpaces (PieceFile endFile, int endRank) {
+        if (this.pieceFile.equals(endFile) && endRank == this.pieceRank) {
+            return false;
+        }
+        
         int spacesMoved = Math.abs(endRank - this.pieceRank) + Math.abs(this.pieceFile.ordinal() - endFile.ordinal()); 
         if (spacesMoved != 3) {
             return false;

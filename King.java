@@ -6,6 +6,9 @@ public class King extends ReturnPiece {
     }
 
     public boolean checkSpaces (PieceFile endFile, int endRank) {
-        
+        if (this.pieceFile.equals(endFile) && endRank == this.pieceRank) {
+            return false;
+        }
+        return true;
     }
 }

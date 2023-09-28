@@ -9,7 +9,10 @@ public class Pawn extends ReturnPiece {
     }
 
     public boolean checkSpaces (PieceFile endFile, int endRank) {
-        // Add Enpassant and ability to promote
+        if (this.pieceFile.equals(endFile) && endRank == this.pieceRank) {
+            return false;
+        }
+        // Add Enpassant and ability to promote also when double jumping check if there is a piece in front of it
 
         // Not taking Piece
         if (this.pieceType == PieceType.WP) {
