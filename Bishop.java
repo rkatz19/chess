@@ -5,7 +5,7 @@ public class Bishop extends ReturnPiece {
         super(type, file, rank);
     }
 
-    public void checkSpaces (String destination) {
-
+    public boolean checkSpaces (PieceFile endFile, int endRank) {
+    
     }
 }

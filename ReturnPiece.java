@@ -16,9 +16,9 @@ class ReturnPiece {
     }
 
     // Enables movement for other pieces
-    public void checkSpaces(String destination) {
-
-    }
+    public boolean checkSpaces (PieceFile endFile, int endRank) {
+		return false;
+	}
 
 	public String toString() {
 		return ""+pieceFile+pieceRank+":"+pieceType;

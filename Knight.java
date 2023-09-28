@@ -5,7 +5,11 @@ public class Knight extends ReturnPiece {
         super(type, file, rank);
     }
 
-    public void checkSpaces (String destination) {
-
+    public boolean checkSpaces (PieceFile endFile, int endRank) {
+        int spacesMoved = Math.abs(endRank - this.pieceRank) + Math.abs(this.pieceFile.ordinal() - endFile.ordinal()); 
+        if (spacesMoved != 3) {
+            return false;
+        }
+        return true;
     }
 }
