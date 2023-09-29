@@ -5,7 +5,7 @@ public class Pawn extends ReturnPiece {
     
     public Pawn (PieceType type, PieceFile file, int rank) {
         super(type, file, rank);
-        this.firstMove = false;
+        this.firstMove = true;
     }
 
     public boolean checkSpaces (PieceFile endFile, int endRank) {

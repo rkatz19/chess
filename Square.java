@@ -1,14 +1,18 @@
 package chess;
 
+import java.util.Objects;
+
 import chess.ReturnPiece.PieceFile;
 
 public class Square {
     PieceFile squareFile;
     int squareRank;
+    private int hashCode;
 
     public Square (PieceFile pieceFile, int pieceRank) {
-        squareFile = pieceFile;
-        squareRank = pieceRank;
+        this.squareFile = pieceFile;
+        this.squareRank = pieceRank;
+        this.hashCode = Objects.hash(pieceFile, pieceRank);
     }
 
     public boolean equals(Object other) {
@@ -16,7 +20,11 @@ public class Square {
 			return false;
 		}
 		Square otherPiece = (Square) other;
-		return squareFile == otherPiece.squareFile &&
-			   squareRank == otherPiece.squareRank;
+		return this.squareFile == otherPiece.squareFile &&
+			   this.squareRank == otherPiece.squareRank;
 	}
+
+    public int hashCode() {
+        return this.hashCode;
+    }
 }
