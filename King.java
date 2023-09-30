@@ -9,6 +9,9 @@ public class King extends ReturnPiece {
         if (this.pieceFile.equals(endFile) && endRank == this.pieceRank) {
             return false;
         }
-        return true;
+        if (Math.abs(endFile.ordinal() - this.pieceFile.ordinal()) <= 1 && Math.abs(endRank - pieceRank) <= 1) {
+            return true;
+        }
+        return false;
     }
 }

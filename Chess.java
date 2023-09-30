@@ -57,19 +57,20 @@ public class Chess {
 		ReturnPiece currentPiece = spotsTaken.get(new Square(startPieceFile, startPieceRank));
 		if (currentPiece == null) {
 			rp.message = Message.ILLEGAL_MOVE;
+			return rp;
 		} else if (currentPiece.pieceType.ordinal() >= 6 && playerToMove.equals(Player.white)) {
 			rp.message = Message.ILLEGAL_MOVE;
+			return rp;
 		} else if (currentPiece.pieceType.ordinal() < 6 && playerToMove.equals(Player.black)) {
 			rp.message = Message.ILLEGAL_MOVE;
+			return rp;
 		}
 		ReturnPiece endPiece = spotsTaken.get(new Square(endPieceFile, endPieceRank));
-		System.out.println(currentPiece);
 		if (currentPiece != null) {
 			switch (currentPiece.pieceType.ordinal() % 6) {
 				case 0:
 					Pawn pawnInUse = (Pawn) currentPiece;
 					viableMove = pawnInUse.checkSpaces(endPieceFile, endPieceRank);
-					System.out.println(viableMove);
 					break;
 				case 1:
 					Rook rookInUse = (Rook) currentPiece;
@@ -84,12 +85,22 @@ public class Chess {
 					viableMove = bishopInUse.checkSpaces(endPieceFile, endPieceRank);
 					break;
 				case 4: 
-					Queen queenInUse = (Queen) currentPiece;
-					viableMove = queenInUse.checkSpaces(endPieceFile, endPieceRank);
+					if (currentPiece.pieceFile.ordinal() <= 5) {
+						Queen queenInUse = (Queen) currentPiece;
+						viableMove = queenInUse.checkSpaces(endPieceFile, endPieceRank);
+					} else {
+						King kingInUse = (King) currentPiece;
+						viableMove = kingInUse.checkSpaces(endPieceFile, endPieceRank);
+					}
 					break;
 				case 5:
-					King kingInUse = (King) currentPiece;
-					viableMove = kingInUse.checkSpaces(endPieceFile, endPieceRank);
+					if (currentPiece.pieceFile.ordinal() <= 5) {
+						King kingInUse = (King) currentPiece;
+						viableMove = kingInUse.checkSpaces(endPieceFile, endPieceRank);
+					} else {
+						Queen queenInUse = (Queen) currentPiece;
+						viableMove = queenInUse.checkSpaces(endPieceFile, endPieceRank);
+					}
 					break;
 			}
 		}
@@ -101,20 +112,33 @@ public class Chess {
 		}
 		
 		// To check the conditions for check
-		Boolean preCheck = false;
+		// Boolean preCheck = false;
 		Boolean postCheck = false;
 		Boolean opposingCheck = false;
 		Boolean opposingCheckmate = false;
+		King whiteKing = null;
+		King blackKing = null;
 
-		// if () {
-		// 	//execute check checker for current player's king
-		// } 
-
+		// Checks if Current King is in Check
+		if (viableMove) {
+			//execute check checker for current player's king
+			for (int i = 0; i < rp.piecesOnBoard.size(); i++) {
+				if (rp.piecesOnBoard.get(i).pieceType.ordinal() == 5) {
+					whiteKing = (King) rp.piecesOnBoard.get(i);
+				} 
+				if (rp.piecesOnBoard.get(i).pieceType.ordinal() == 10) {
+					blackKing = (King) rp.piecesOnBoard.get(i);
+				}
+			}
+			// preCheck = checkChecker((playerToMove.ordinal() == 0) ? whiteKing : blackKing, (playerToMove.ordinal() == 0) ? Player.white : Player.black);
+		} 
+		System.out.println(viableMove);
+		ReturnPiece removedPiece = null;
 		if (viableMove) {
 			if (endPiece != null) {
 				for (int i = 0; i < rp.piecesOnBoard.size(); i++) {
 					if (rp.piecesOnBoard.get(i).equals(endPiece)) {
-						ReturnPiece removedPiece = rp.piecesOnBoard.remove(i);
+						removedPiece = rp.piecesOnBoard.remove(i);
 						spotsTaken.put(new Square(removedPiece.pieceFile, removedPiece.pieceRank), null);
 					}
 				}
@@ -124,26 +148,44 @@ public class Chess {
 			currentPiece.pieceFile = endPieceFile;
 			currentPiece.pieceRank = endPieceRank;
 
-			// If they are "offering" a draw
+			
+		}
+
+		if (viableMove) {
+			//execute check checker again for current player's king will be in check
+			postCheck = checkSpace((playerToMove.ordinal() == 0) ? whiteKing.pieceFile : blackKing.pieceFile, (playerToMove.ordinal() == 0) ? whiteKing.pieceRank : blackKing.pieceRank, (playerToMove.ordinal() == 0) ? Player.white : Player.black);
+		} 
+
+		if (viableMove) {
+			//execute check checker again for opposing player's king will be in check
+			opposingCheck = checkSpace((playerToMove.ordinal() == 0) ? blackKing.pieceFile : whiteKing.pieceFile, (playerToMove.ordinal() == 0) ? blackKing.pieceRank : whiteKing.pieceRank, (playerToMove.ordinal() == 0) ? Player.black : Player.white);
+		} 
+
+		if (postCheck) {
+			viableMove = false;
+			currentPiece.pieceFile = startPieceFile;
+			currentPiece.pieceRank = startPieceRank;
+			if (removedPiece != null) {
+				rp.piecesOnBoard.add(removedPiece);
+				spotsTaken.put(new Square(removedPiece.pieceFile, removedPiece.pieceRank), removedPiece);
+			}
+			spotsTaken.put(new Square(currentPiece.pieceFile, currentPiece.pieceRank), currentPiece);
+		}
+
+		// if (viableMove && opposingCheck) {
+		// 	//Checkmate Checker (check if every possible space the king can move are okay + more)
+
+		// } 
+
+		// If they are "offering" a draw
 			// if (additionalInfo.equals("draw?")) {
 			// 	rp.message = Message.DRAW;
 			// }
-		}
-
-		// if () {
-		// 	//execute check checker again for current player's king will be in check
-		// } 
-
-		// if () {
-		// 	//execute check checker again for opposing player's king will be in check
-		// } 
-
-		// if () {
-		// 	//execute checkmate checker if opposing piece is in check
-		// } 
 
 		if (!viableMove) {
 			rp.message = Message.ILLEGAL_MOVE;
+		} else if (opposingCheck) {
+			rp.message = Message.CHECK;
 		} else if (playerToMove.equals(Player.white)) {
 			playerToMove = Player.black;
 		} else {
@@ -153,6 +195,107 @@ public class Chess {
 		return rp;
 	}
 	
+	public static boolean checkSpace(PieceFile pieceFile, int pieceRank, Player color) {
+		for (int i = 0; i < rp.piecesOnBoard.size(); i++) {
+			// System.out.println(" +1 ");
+
+			if (rp.piecesOnBoard.get(i).pieceType.ordinal() > 5 && color.equals(Player.white)) {
+				// System.out.println(" +2 ");
+				switch (rp.piecesOnBoard.get(i).pieceType.ordinal() % 6) {
+					case 0:
+						// System.out.println(" 0 ");
+
+						Pawn pawnInUse = (Pawn) rp.piecesOnBoard.get(i);
+						if (pawnInUse.checkSpaces(pieceFile, pieceRank)) {
+							// System.out.println(" 0- ");
+							return true;
+						}
+						break;
+					case 1:
+						// System.out.println(" 1 ");
+						Rook rookInUse = (Rook) rp.piecesOnBoard.get(i);
+						if (rookInUse.checkSpaces(pieceFile, pieceRank)) {
+							// System.out.println(" 1- ");
+							return true;
+						}
+						break;
+					case 2:
+						// System.out.println(" 2 ");
+						Knight knightInUse = (Knight) rp.piecesOnBoard.get(i);
+						if (knightInUse.checkSpaces(pieceFile, pieceRank)) {
+							// System.out.println(" 2- ");
+							return true;
+						}
+						break;
+					case 3:
+						// System.out.println(" 3 ");
+						Bishop bishopInUse = (Bishop) rp.piecesOnBoard.get(i);
+						if (bishopInUse.checkSpaces(pieceFile, pieceRank)) {
+							// System.out.println(" 3- ");
+							return true;
+						}
+						break;
+					case 4: 
+						// System.out.println(" 4 ");
+						King kingInUse = (King) rp.piecesOnBoard.get(i);
+						if (kingInUse.checkSpaces(pieceFile, pieceRank)) {
+							// System.out.println(" 4- ");
+							return true;
+						}
+						break;
+					case 5:
+						// System.out.println(" 5 ");
+						Queen queenInUse = (Queen) rp.piecesOnBoard.get(i);
+						if (queenInUse.checkSpaces(pieceFile, pieceRank)) {
+							// System.out.println(" 5- ");
+							return true;
+						}
+						break;
+				}
+			} else if (rp.piecesOnBoard.get(i).pieceType.ordinal() < 6 && color.equals(Player.black)) {
+				switch (rp.piecesOnBoard.get(i).pieceType.ordinal() % 6) {
+					case 0:
+						Pawn pawnInUse = (Pawn) rp.piecesOnBoard.get(i);
+						if (pawnInUse.checkSpaces(pieceFile, pieceRank)) {
+							return true;
+						}
+						break;
+					case 1:
+						Rook rookInUse = (Rook) rp.piecesOnBoard.get(i);
+						if (rookInUse.checkSpaces(pieceFile, pieceRank)) {
+							return true;
+						}
+						break;
+					case 2:
+						Knight knightInUse = (Knight) rp.piecesOnBoard.get(i);
+						if (knightInUse.checkSpaces(pieceFile, pieceRank)) {
+							return true;
+						}
+						break;
+					case 3:
+						Bishop bishopInUse = (Bishop) rp.piecesOnBoard.get(i);
+						if (bishopInUse.checkSpaces(pieceFile, pieceRank)) {
+							return true;
+						}
+						break;
+					case 4: 
+						Queen queenInUse = (Queen) rp.piecesOnBoard.get(i);
+						if (queenInUse.checkSpaces(pieceFile, pieceRank)) {
+							return true;
+						}
+						break;
+					case 5:
+						King kingInUse = (King) rp.piecesOnBoard.get(i);
+						if (kingInUse.checkSpaces(pieceFile, pieceRank)) {
+							return true;
+						}
+						break;
+				}
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * This method should reset the game, and start from scratch.
 	 */
