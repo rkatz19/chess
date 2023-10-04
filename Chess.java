@@ -173,39 +173,128 @@ public class Chess {
 		}
 
 		if (viableMove && !opposingCheck.isEmpty()) {
-			ArrayList<Square> viableSpaces = new ArrayList<>();
+			ArrayList<Square> viableKingMoves = new ArrayList<>();
+			boolean canTake = false;
+			boolean viableBlock = false;
 			ReturnPiece king = (playerToMove.ordinal() == 0) ? blackKing : whiteKing;
-			if(opposingCheck.size() > 1){
-				if(onBoard(king.pieceFile.ordinal() - 1, king.pieceRank - 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank - 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank - 1, playerToMove).isEmpty()){
-					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank - 1));
+			if(onBoard(king.pieceFile.ordinal() - 1, king.pieceRank - 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank - 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank - 1, playerToMove).isEmpty()){
+				viableKingMoves.add(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank - 1));
+			}
+			if(onBoard(king.pieceFile.ordinal() - 1, king.pieceRank) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank, playerToMove).isEmpty()){
+				viableKingMoves.add(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank));
+			}
+			if(onBoard(king.pieceFile.ordinal() - 1, king.pieceRank + 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank + 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank + 1, playerToMove).isEmpty()){
+				viableKingMoves.add(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank + 1));
+			}
+			if(onBoard(king.pieceFile.ordinal() + 1, king.pieceRank - 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank - 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank - 1, playerToMove).isEmpty()){
+				viableKingMoves.add(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank - 1));
+			}
+			if(onBoard(king.pieceFile.ordinal() + 1, king.pieceRank) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank, playerToMove).isEmpty()){
+				viableKingMoves.add(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank));
+			}
+			if(onBoard(king.pieceFile.ordinal() + 1, king.pieceRank + 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank + 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank + 1, playerToMove).isEmpty()){
+				viableKingMoves.add(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank + 1));
+			}
+			if(onBoard(king.pieceFile.ordinal(), king.pieceRank - 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank - 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank - 1, playerToMove).isEmpty()){
+				viableKingMoves.add(new Square(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank - 1));
+			}
+			if(onBoard(king.pieceFile.ordinal(), king.pieceRank + 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank + 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank + 1, playerToMove).isEmpty()){
+				viableKingMoves.add(new Square(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank + 1));
+			}
+			if(opposingCheck.size() == 1){
+				ReturnPiece checkingPiece = opposingCheck.get(0);
+				canTake = !checkSpace(checkingPiece.pieceFile, checkingPiece.pieceRank, playerToMove).isEmpty();
+				switch (checkingPiece.pieceType.ordinal() % 6) {
+					case 1:
+						Rook checkingRook = (Rook) checkingPiece;
+						if(king.pieceFile.equals(checkingRook.pieceFile)){
+							if(checkingRook.pieceRank > king.pieceRank){
+								for(int i = 1; i < checkingRook.pieceRank - king.pieceRank; i++){
+									if(!checkSpace(king.pieceFile, king.pieceRank + i, playerToMove).isEmpty()){
+										viableBlock = true;
+									}
+								}
+							}
+							else{
+								for(int i = 1; i < king.pieceRank - checkingRook.pieceRank; i++){
+									if(!checkSpace(king.pieceFile, checkingRook.pieceRank + i, playerToMove).isEmpty()){
+										viableBlock = true;
+									}
+								}
+							}
+						}
+						else if(king.pieceRank == checkingRook.pieceRank){
+							if(checkingRook.pieceFile.ordinal() > king.pieceFile.ordinal()){
+								for(int i = 1; i < checkingRook.pieceFile.ordinal() - king.pieceFile.ordinal(); i++){
+									if(!checkSpace(PieceFile.values()[king.pieceFile.ordinal() + i], king.pieceRank, playerToMove).isEmpty()){
+										viableBlock = true;
+									}
+								}
+							}
+							else{
+								for(int i = 1; i < king.pieceFile.ordinal() - checkingRook.pieceFile.ordinal(); i++){
+									if(!checkSpace(PieceFile.values()[checkingRook.pieceFile.ordinal() + i], king.pieceRank, playerToMove).isEmpty()){
+										viableBlock = true;
+									}
+								}
+							}
+						}
+						break;
+					case 3:
+						Bishop checkingBishop = (Bishop) checkingPiece;
+						if(checkingBishop.pieceFile.ordinal() > king.pieceFile.ordinal()){
+							if(checkingBishop.pieceRank > king.pieceRank){
+								for(int i = 1; i < Math.abs(king.pieceRank - checkingBishop.pieceRank); i++){
+									if(!checkSpace(PieceFile.values()[king.pieceFile.ordinal() + i], king.pieceRank + i, playerToMove).isEmpty()){
+										viableBlock = true;
+									}
+								}
+							}
+							else if(checkingBishop.pieceRank < king.pieceRank){
+								for(int i = 1; i < Math.abs(king.pieceRank - checkingBishop.pieceRank); i++){
+									if(!checkSpace(PieceFile.values()[king.pieceFile.ordinal() + i], king.pieceRank - i, playerToMove).isEmpty()){
+										viableBlock = true;
+									}
+								}
+							}
+						}
+						else if(checkingBishop.pieceFile.ordinal() < king.pieceFile.ordinal()){
+							if(checkingBishop.pieceRank > king.pieceRank){
+								for(int i = 1; i < Math.abs(checkingBishop.pieceFile.ordinal() - king.pieceFile.ordinal()); i++){
+									if(!checkSpace(PieceFile.values()[king.pieceFile.ordinal() - i], king.pieceRank + i, playerToMove).isEmpty()){
+										viableBlock = true;
+									}
+								}
+							}
+							else if(checkingBishop.pieceRank > king.pieceRank){
+								for(int i = 1; i < Math.abs(checkingBishop.pieceFile.ordinal() - king.pieceFile.ordinal()); i++){
+									if(!checkSpace(PieceFile.values()[king.pieceFile.ordinal() - i], king.pieceRank - i, playerToMove).isEmpty()){
+										viableBlock = true;
+									}
+								}
+							}
+						}
+						break;
+					case 4: 
+						if (checkingPiece.pieceFile.ordinal() <= 5) {
+							Queen checkingQueen = (Queen) checkingPiece;
+							viableMove = checkingQueen.checkSpaces(endPieceFile, endPieceRank);
+						}
+						break;
+					case 5:
+						if (checkingPiece.pieceFile.ordinal() >= 6) {
+							Queen checkingQueen = (Queen) checkingPiece;
+							viableMove = checkingQueen.checkSpaces(endPieceFile, endPieceRank);
+						}
+						break;
 				}
-				if(onBoard(king.pieceFile.ordinal() - 1, king.pieceRank) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank, playerToMove).isEmpty()){
-					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank));
-				}
-				if(onBoard(king.pieceFile.ordinal() - 1, king.pieceRank + 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank + 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank + 1, playerToMove).isEmpty()){
-					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank + 1));
-				}
-				if(onBoard(king.pieceFile.ordinal() + 1, king.pieceRank - 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank - 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank - 1, playerToMove).isEmpty()){
-					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank - 1));
-				}
-				if(onBoard(king.pieceFile.ordinal() + 1, king.pieceRank) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank, playerToMove).isEmpty()){
-					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank));
-				}
-				if(onBoard(king.pieceFile.ordinal() + 1, king.pieceRank + 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank + 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank + 1, playerToMove).isEmpty()){
-					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank + 1));
-				}
-				if(onBoard(king.pieceFile.ordinal(), king.pieceRank - 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank - 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank - 1, playerToMove).isEmpty()){
-					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank - 1));
-				}
-				if(onBoard(king.pieceFile.ordinal(), king.pieceRank + 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank + 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank + 1, playerToMove).isEmpty()){
-					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank + 1));
-				}
+				
+			}
+			if(viableKingMoves.isEmpty() && !viableBlock && !canTake){
+				opposingCheckmate = true;
 			}
 			else{
-
-			}
-			if(viableSpaces.isEmpty()){
-				opposingCheckmate = true;
+				opposingCheckmate = false;
 			}
 		} 
 
@@ -328,7 +417,6 @@ public class Chess {
 		}
 		return null;
 	}
-
 
 	public static boolean onBoard(int file, int rank){
 		if(file >= 0 && file <= 7 && rank >= 1 && rank <= 8){
