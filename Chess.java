@@ -113,8 +113,8 @@ public class Chess {
 		
 		// To check the conditions for check
 		// Boolean preCheck = false;
-		Boolean postCheck = false;
-		Boolean opposingCheck = false;
+		ArrayList<ReturnPiece> postCheck = new ArrayList<>();
+		ArrayList<ReturnPiece> opposingCheck = new ArrayList<>();
 		Boolean opposingCheckmate = false;
 		King whiteKing = null;
 		King blackKing = null;
@@ -161,7 +161,7 @@ public class Chess {
 			opposingCheck = checkSpace((playerToMove.ordinal() == 0) ? blackKing.pieceFile : whiteKing.pieceFile, (playerToMove.ordinal() == 0) ? blackKing.pieceRank : whiteKing.pieceRank, (playerToMove.ordinal() == 0) ? Player.black : Player.white);
 		} 
 
-		if (postCheck) {
+		if (!postCheck.isEmpty()) {
 			viableMove = false;
 			currentPiece.pieceFile = startPieceFile;
 			currentPiece.pieceRank = startPieceRank;
@@ -172,10 +172,42 @@ public class Chess {
 			spotsTaken.put(new Square(currentPiece.pieceFile, currentPiece.pieceRank), currentPiece);
 		}
 
-		// if (viableMove && opposingCheck) {
-		// 	//Checkmate Checker (check if every possible space the king can move are okay + more)
+		if (viableMove && !opposingCheck.isEmpty()) {
+			ArrayList<Square> viableSpaces = new ArrayList<>();
+			ReturnPiece king = (playerToMove.ordinal() == 0) ? blackKing : whiteKing;
+			if(opposingCheck.size() > 1){
+				if(onBoard(king.pieceFile.ordinal() - 1, king.pieceRank - 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank - 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank - 1, playerToMove).isEmpty()){
+					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank - 1));
+				}
+				if(onBoard(king.pieceFile.ordinal() - 1, king.pieceRank) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank, playerToMove).isEmpty()){
+					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank));
+				}
+				if(onBoard(king.pieceFile.ordinal() - 1, king.pieceRank + 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank + 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank + 1, playerToMove).isEmpty()){
+					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank + 1));
+				}
+				if(onBoard(king.pieceFile.ordinal() + 1, king.pieceRank - 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank - 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank - 1, playerToMove).isEmpty()){
+					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank - 1));
+				}
+				if(onBoard(king.pieceFile.ordinal() + 1, king.pieceRank) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank, playerToMove).isEmpty()){
+					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank));
+				}
+				if(onBoard(king.pieceFile.ordinal() + 1, king.pieceRank + 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank + 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank + 1, playerToMove).isEmpty()){
+					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal() + 1], king.pieceRank + 1));
+				}
+				if(onBoard(king.pieceFile.ordinal(), king.pieceRank - 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank - 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank - 1, playerToMove).isEmpty()){
+					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank - 1));
+				}
+				if(onBoard(king.pieceFile.ordinal(), king.pieceRank + 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank + 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank + 1, playerToMove).isEmpty()){
+					viableSpaces.add(new Square(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank + 1));
+				}
+			}
+			else{
 
-		// } 
+			}
+			if(viableSpaces.isEmpty()){
+				opposingCheckmate = true;
+			}
+		} 
 
 		// If they are "offering" a draw
 			// if (additionalInfo.equals("draw?")) {
@@ -184,7 +216,7 @@ public class Chess {
 
 		if (!viableMove) {
 			rp.message = Message.ILLEGAL_MOVE;
-		} else if (opposingCheck) {
+		} else if (!opposingCheck.isEmpty()) {
 			rp.message = Message.CHECK;
 		} else if (playerToMove.equals(Player.white)) {
 			playerToMove = Player.black;
@@ -195,7 +227,8 @@ public class Chess {
 		return rp;
 	}
 	
-	public static boolean checkSpace(PieceFile pieceFile, int pieceRank, Player color) {
+	public static ArrayList<ReturnPiece> checkSpace(PieceFile pieceFile, int pieceRank, Player color) {
+		ArrayList<ReturnPiece> checkingPieces = new ArrayList<>();
 		for (int i = 0; i < rp.piecesOnBoard.size(); i++) {
 			// System.out.println(" +1 ");
 
@@ -208,7 +241,7 @@ public class Chess {
 						Pawn pawnInUse = (Pawn) rp.piecesOnBoard.get(i);
 						if (pawnInUse.checkSpaces(pieceFile, pieceRank)) {
 							// System.out.println(" 0- ");
-							return true;
+							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 1:
@@ -216,7 +249,7 @@ public class Chess {
 						Rook rookInUse = (Rook) rp.piecesOnBoard.get(i);
 						if (rookInUse.checkSpaces(pieceFile, pieceRank)) {
 							// System.out.println(" 1- ");
-							return true;
+							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 2:
@@ -224,7 +257,7 @@ public class Chess {
 						Knight knightInUse = (Knight) rp.piecesOnBoard.get(i);
 						if (knightInUse.checkSpaces(pieceFile, pieceRank)) {
 							// System.out.println(" 2- ");
-							return true;
+							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 3:
@@ -232,7 +265,7 @@ public class Chess {
 						Bishop bishopInUse = (Bishop) rp.piecesOnBoard.get(i);
 						if (bishopInUse.checkSpaces(pieceFile, pieceRank)) {
 							// System.out.println(" 3- ");
-							return true;
+							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 4: 
@@ -240,7 +273,7 @@ public class Chess {
 						King kingInUse = (King) rp.piecesOnBoard.get(i);
 						if (kingInUse.checkSpaces(pieceFile, pieceRank)) {
 							// System.out.println(" 4- ");
-							return true;
+							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 5:
@@ -248,7 +281,7 @@ public class Chess {
 						Queen queenInUse = (Queen) rp.piecesOnBoard.get(i);
 						if (queenInUse.checkSpaces(pieceFile, pieceRank)) {
 							// System.out.println(" 5- ");
-							return true;
+							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 				}
@@ -257,41 +290,49 @@ public class Chess {
 					case 0:
 						Pawn pawnInUse = (Pawn) rp.piecesOnBoard.get(i);
 						if (pawnInUse.checkSpaces(pieceFile, pieceRank)) {
-							return true;
+							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 1:
 						Rook rookInUse = (Rook) rp.piecesOnBoard.get(i);
 						if (rookInUse.checkSpaces(pieceFile, pieceRank)) {
-							return true;
+							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 2:
 						Knight knightInUse = (Knight) rp.piecesOnBoard.get(i);
 						if (knightInUse.checkSpaces(pieceFile, pieceRank)) {
-							return true;
+							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 3:
 						Bishop bishopInUse = (Bishop) rp.piecesOnBoard.get(i);
 						if (bishopInUse.checkSpaces(pieceFile, pieceRank)) {
-							return true;
+							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 4: 
 						Queen queenInUse = (Queen) rp.piecesOnBoard.get(i);
 						if (queenInUse.checkSpaces(pieceFile, pieceRank)) {
-							return true;
+							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 5:
 						King kingInUse = (King) rp.piecesOnBoard.get(i);
 						if (kingInUse.checkSpaces(pieceFile, pieceRank)) {
-							return true;
+							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 				}
 			}
+		}
+		return null;
+	}
+
+
+	public static boolean onBoard(int file, int rank){
+		if(file >= 0 && file <= 7 && rank >= 1 && rank <= 8){
+			return true;
 		}
 		return false;
 	}
@@ -394,4 +435,3 @@ public class Chess {
 		rp.piecesOnBoard = piecesOnBoard;
 	}
 }
-
