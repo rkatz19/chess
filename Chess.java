@@ -174,7 +174,7 @@ public class Chess {
 
 		if (viableMove && !opposingCheck.isEmpty()) {
 			ArrayList<Square> viableKingMoves = new ArrayList<>();
-			boolean canTake = false;
+			ArrayList<ReturnPiece> canTake = new ArrayList<>();
 			boolean viableBlock = false;
 			ReturnPiece king = (playerToMove.ordinal() == 0) ? blackKing : whiteKing;
 			if(onBoard(king.pieceFile.ordinal() - 1, king.pieceRank - 1) && spotsTaken.containsKey(new Square(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank - 1)) && checkSpace(PieceFile.values()[king.pieceFile.ordinal() - 1], king.pieceRank - 1, playerToMove).isEmpty()){
@@ -203,7 +203,8 @@ public class Chess {
 			}
 			if(opposingCheck.size() == 1){
 				ReturnPiece checkingPiece = opposingCheck.get(0);
-				canTake = !checkSpace(checkingPiece.pieceFile, checkingPiece.pieceRank, playerToMove).isEmpty();
+				canTake = checkSpace(checkingPiece.pieceFile, checkingPiece.pieceRank, playerToMove);
+
 				switch (checkingPiece.pieceType.ordinal() % 6) {
 					case 1:
 						Rook checkingRook = (Rook) checkingPiece;
@@ -416,7 +417,12 @@ public class Chess {
 				}
 				
 			}
-			if(viableKingMoves.isEmpty() && !viableBlock && !canTake){
+			System.out.println("viable moves: " + !viableKingMoves.isEmpty());
+			System.out.println("viable block: " + viableBlock);
+			for(ReturnPiece p : canTake){
+				System.out.println("can take: " + p);
+			}
+			if(viableKingMoves.isEmpty() && !viableBlock && !canTake.isEmpty()){
 				opposingCheckmate = true;
 			}
 			else{

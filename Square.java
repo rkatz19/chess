@@ -24,6 +24,10 @@ public class Square {
 			   this.squareRank == otherPiece.squareRank;
 	}
 
+	public String toString(){
+		return squareFile.toString() + ", "  + squareRank;
+	}
+
     public int hashCode() {
         return this.hashCode;
     }
