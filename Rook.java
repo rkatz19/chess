@@ -29,13 +29,13 @@ public class Rook extends ReturnPiece {
 				}
 			}
 		} else if (endRank - this.pieceRank == 0 && endFile.ordinal() - this.pieceFile.ordinal() < 0) { // Left
-			for (int i = 1; i < Math.abs(endRank - this.pieceRank) - 1; i++) {
+			for (int i = 1; i < Math.abs(endFile.ordinal() - this.pieceFile.ordinal()) - 1; i++) {
 				if (Chess.spotsTaken.get(new Square(PieceFile.values()[this.pieceFile.ordinal() - i], this.pieceRank)) != null) {
 					return false;
 				}
 			}
 		} else if (endRank - this.pieceRank == 0 && endFile.ordinal() - this.pieceFile.ordinal() > 0) { // Right
-			for (int i = 1; i < Math.abs(endRank - this.pieceRank) - 1; i++) {
+			for (int i = 1; i < Math.abs(endFile.ordinal() - this.pieceFile.ordinal()) - 1; i++) {
 				if (Chess.spotsTaken.get(new Square(PieceFile.values()[this.pieceFile.ordinal() + i], this.pieceRank)) != null) {
 					return false;
 				}

@@ -11,9 +11,13 @@ public class King extends ReturnPiece {
         if (this.pieceFile.equals(endFile) && endRank == this.pieceRank) {
             return false;
         }
-        if (Math.abs(endFile.ordinal() - this.pieceFile.ordinal()) <= 1 && Math.abs(endRank - pieceRank) <= 1) {
-            firstMove = false;
-            return true;
+        try {
+            if (Math.abs(endFile.ordinal() - this.pieceFile.ordinal()) <= 1 && Math.abs(endRank - pieceRank) <= 1) {
+                firstMove = false;
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
         }
         if (Chess.playerToMove.equals(Chess.Player.white) && this.pieceFile.equals(PieceFile.e) && this.pieceRank == 1) {
             if (endFile.equals(PieceFile.c) && endRank == 1 && firstMove) {

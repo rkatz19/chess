@@ -33,7 +33,7 @@ public class Pawn extends ReturnPiece {
                 return false;
             // Taking Piece
             } else {
-                if (endRank - this.pieceRank == 1) {
+                if (endRank - this.pieceRank == 1 && Math.abs(this.pieceFile.ordinal() - endFile.ordinal()) == 1) {
                     for (int i = 0; i < Chess.rp.piecesOnBoard.size(); i++) {
                         if (Chess.rp.piecesOnBoard.get(i).pieceFile.equals(endFile) && Chess.rp.piecesOnBoard.get(i).pieceRank == endRank) {
                             firstMove = false;
@@ -63,7 +63,7 @@ public class Pawn extends ReturnPiece {
                 return false;
             // Taking Piece
             } else {
-                if (this.pieceRank - endRank == 1) {
+                if (this.pieceRank - endRank == 1 && Math.abs(this.pieceFile.ordinal() - endFile.ordinal()) == 1) {
                     for (int i = 0; i < Chess.rp.piecesOnBoard.size(); i++) {
                         if (Chess.rp.piecesOnBoard.get(i).pieceFile.equals(endFile) && Chess.rp.piecesOnBoard.get(i).pieceRank == endRank) {
                             firstMove = false;
