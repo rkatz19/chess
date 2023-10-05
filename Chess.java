@@ -85,7 +85,7 @@ public class Chess {
 					viableMove = bishopInUse.checkSpaces(endPieceFile, endPieceRank);
 					break;
 				case 4: 
-					if (currentPiece.pieceFile.ordinal() <= 5) {
+					if (currentPiece.pieceType.ordinal() <= 5) {
 						Queen queenInUse = (Queen) currentPiece;
 						viableMove = queenInUse.checkSpaces(endPieceFile, endPieceRank);
 					} else {
@@ -94,7 +94,7 @@ public class Chess {
 					}
 					break;
 				case 5:
-					if (currentPiece.pieceFile.ordinal() <= 5) {
+					if (currentPiece.pieceType.ordinal() <= 5) {
 						King kingInUse = (King) currentPiece;
 						viableMove = kingInUse.checkSpaces(endPieceFile, endPieceRank);
 					} else {
@@ -276,7 +276,7 @@ public class Chess {
 						}
 						break;
 					case 4: 
-						if (checkingPiece.pieceFile.ordinal() <= 5) {
+						if (checkingPiece.pieceType.ordinal() <= 5) {
 							Queen checkingQueen = (Queen) checkingPiece;
 							if(king.pieceFile.equals(checkingQueen.pieceFile)){
 								if(checkingQueen.pieceRank > king.pieceRank){
@@ -345,7 +345,7 @@ public class Chess {
 						}
 						break;
 					case 5:
-						if (checkingPiece.pieceFile.ordinal() <= 5) {
+						if (checkingPiece.pieceType.ordinal() <= 5) {
 							Queen checkingQueen = (Queen) checkingPiece;
 							if(king.pieceFile.equals(checkingQueen.pieceFile)){
 								if(checkingQueen.pieceRank > king.pieceRank){
@@ -437,12 +437,12 @@ public class Chess {
 			rp.message = Message.CHECKMATE_WHITE_WINS;
 		} else if (opposingCheckmate && playerToMove.equals(Player.black)) {
 			rp.message = Message.CHECKMATE_BLACK_WINS;
-		}
-		
-		if (playerToMove.equals(Player.white)) {
-			playerToMove = Player.black;
 		} else {
-			playerToMove = Player.white;
+			if (playerToMove.equals(Player.white)) {
+				playerToMove = Player.black;
+			} else {
+				playerToMove = Player.white;
+			}
 		}
 
 		return rp;
