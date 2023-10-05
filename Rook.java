@@ -1,9 +1,16 @@
 package chess;
 
 public class Rook extends ReturnPiece {
+	boolean firstMove;
 	public Rook (PieceType type, PieceFile file, int rank) {
 		super(type, file, rank);
+		firstMove = true;
 	}
+
+	public Rook (PieceType type, PieceFile file, int rank, boolean firstMove) {
+        super(type, file, rank);
+        this.firstMove = firstMove;
+    }
 
 	public boolean checkSpaces (PieceFile endFile, int endRank) {
 		if (this.pieceFile.equals(endFile) && endRank == this.pieceRank) {
@@ -36,6 +43,7 @@ public class Rook extends ReturnPiece {
 		} else {
 			return false;
 		}
+		firstMove = true;
 		return true;
 	}
 }
