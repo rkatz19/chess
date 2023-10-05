@@ -278,13 +278,139 @@ public class Chess {
 					case 4: 
 						if (checkingPiece.pieceFile.ordinal() <= 5) {
 							Queen checkingQueen = (Queen) checkingPiece;
-							viableMove = checkingQueen.checkSpaces(endPieceFile, endPieceRank);
+							if(king.pieceFile.equals(checkingQueen.pieceFile)){
+								if(checkingQueen.pieceRank > king.pieceRank){
+									for(int i = 1; i < checkingQueen.pieceRank - king.pieceRank; i++){
+										if(!checkSpace(king.pieceFile, king.pieceRank + i, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+								else{
+									for(int i = 1; i < king.pieceRank - checkingQueen.pieceRank; i++){
+										if(!checkSpace(king.pieceFile, checkingQueen.pieceRank + i, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+							}
+							else if(king.pieceRank == checkingQueen.pieceRank){
+								if(checkingQueen.pieceFile.ordinal() > king.pieceFile.ordinal()){
+									for(int i = 1; i < checkingQueen.pieceFile.ordinal() - king.pieceFile.ordinal(); i++){
+										if(!checkSpace(PieceFile.values()[king.pieceFile.ordinal() + i], king.pieceRank, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+								else{
+									for(int i = 1; i < king.pieceFile.ordinal() - checkingQueen.pieceFile.ordinal(); i++){
+										if(!checkSpace(PieceFile.values()[checkingQueen.pieceFile.ordinal() + i], king.pieceRank, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+							}
+							if(checkingQueen.pieceFile.ordinal() > king.pieceFile.ordinal()){
+								if(checkingQueen.pieceRank > king.pieceRank){
+									for(int i = 1; i < Math.abs(king.pieceRank - checkingQueen.pieceRank); i++){
+										if(!checkSpace(PieceFile.values()[king.pieceFile.ordinal() + i], king.pieceRank + i, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+								else if(checkingQueen.pieceRank < king.pieceRank){
+									for(int i = 1; i < Math.abs(king.pieceRank - checkingQueen.pieceRank); i++){
+										if(!checkSpace(PieceFile.values()[king.pieceFile.ordinal() + i], king.pieceRank - i, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+							}
+							else if(checkingQueen.pieceFile.ordinal() < king.pieceFile.ordinal()){
+								if(checkingQueen.pieceRank > king.pieceRank){
+									for(int i = 1; i < Math.abs(checkingQueen.pieceFile.ordinal() - king.pieceFile.ordinal()); i++){
+										if(!checkSpace(PieceFile.values()[king.pieceFile.ordinal() - i], king.pieceRank + i, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+								else if(checkingQueen.pieceRank > king.pieceRank){
+									for(int i = 1; i < Math.abs(checkingQueen.pieceFile.ordinal() - king.pieceFile.ordinal()); i++){
+										if(!checkSpace(PieceFile.values()[king.pieceFile.ordinal() - i], king.pieceRank - i, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+							}
 						}
 						break;
 					case 5:
-						if (checkingPiece.pieceFile.ordinal() >= 6) {
+						if (checkingPiece.pieceFile.ordinal() <= 5) {
 							Queen checkingQueen = (Queen) checkingPiece;
-							viableMove = checkingQueen.checkSpaces(endPieceFile, endPieceRank);
+							if(king.pieceFile.equals(checkingQueen.pieceFile)){
+								if(checkingQueen.pieceRank > king.pieceRank){
+									for(int i = 1; i < checkingQueen.pieceRank - king.pieceRank; i++){
+										if(!checkSpace(king.pieceFile, king.pieceRank + i, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+								else{
+									for(int i = 1; i < king.pieceRank - checkingQueen.pieceRank; i++){
+										if(!checkSpace(king.pieceFile, checkingQueen.pieceRank + i, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+							}
+							else if(king.pieceRank == checkingQueen.pieceRank){
+								if(checkingQueen.pieceFile.ordinal() > king.pieceFile.ordinal()){
+									for(int i = 1; i < checkingQueen.pieceFile.ordinal() - king.pieceFile.ordinal(); i++){
+										if(!checkSpace(PieceFile.values()[king.pieceFile.ordinal() + i], king.pieceRank, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+								else{
+									for(int i = 1; i < king.pieceFile.ordinal() - checkingQueen.pieceFile.ordinal(); i++){
+										if(!checkSpace(PieceFile.values()[checkingQueen.pieceFile.ordinal() + i], king.pieceRank, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+							}
+							if(checkingQueen.pieceFile.ordinal() > king.pieceFile.ordinal()){
+								if(checkingQueen.pieceRank > king.pieceRank){
+									for(int i = 1; i < Math.abs(king.pieceRank - checkingQueen.pieceRank); i++){
+										if(!checkSpace(PieceFile.values()[king.pieceFile.ordinal() + i], king.pieceRank + i, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+								else if(checkingQueen.pieceRank < king.pieceRank){
+									for(int i = 1; i < Math.abs(king.pieceRank - checkingQueen.pieceRank); i++){
+										if(!checkSpace(PieceFile.values()[king.pieceFile.ordinal() + i], king.pieceRank - i, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+							}
+							else if(checkingQueen.pieceFile.ordinal() < king.pieceFile.ordinal()){
+								if(checkingQueen.pieceRank > king.pieceRank){
+									for(int i = 1; i < Math.abs(checkingQueen.pieceFile.ordinal() - king.pieceFile.ordinal()); i++){
+										if(!checkSpace(PieceFile.values()[king.pieceFile.ordinal() - i], king.pieceRank + i, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+								else if(checkingQueen.pieceRank > king.pieceRank){
+									for(int i = 1; i < Math.abs(checkingQueen.pieceFile.ordinal() - king.pieceFile.ordinal()); i++){
+										if(!checkSpace(PieceFile.values()[king.pieceFile.ordinal() - i], king.pieceRank - i, playerToMove).isEmpty()){
+											viableBlock = true;
+										}
+									}
+								}
+							}
 						}
 						break;
 				}
@@ -307,7 +433,13 @@ public class Chess {
 			rp.message = Message.ILLEGAL_MOVE;
 		} else if (!opposingCheck.isEmpty()) {
 			rp.message = Message.CHECK;
-		} else if (playerToMove.equals(Player.white)) {
+		} else if (opposingCheckmate && playerToMove.equals(Player.white)){
+			rp.message = Message.CHECKMATE_WHITE_WINS;
+		} else if (opposingCheckmate && playerToMove.equals(Player.black)) {
+			rp.message = Message.CHECKMATE_BLACK_WINS;
+		}
+		
+		if (playerToMove.equals(Player.white)) {
 			playerToMove = Player.black;
 		} else {
 			playerToMove = Player.white;
@@ -415,7 +547,7 @@ public class Chess {
 				}
 			}
 		}
-		return null;
+		return checkingPieces;
 	}
 
 	public static boolean onBoard(int file, int rank){
