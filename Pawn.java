@@ -20,13 +20,13 @@ public class Pawn extends ReturnPiece {
                 if (endRank - this.pieceRank > 2) {
                     return false;
                 } else if (endRank - this.pieceRank == 2) {
-                    if (firstMove) {
+                    if (firstMove && Chess.spotsTaken.get(new Square(endFile, endRank)) == null && Chess.spotsTaken.get(new Square(endFile, endRank - 1)) == null) {
                         firstMove = false;
                         return true;
                     } else {
                         return false;
                     }
-                } else if (endRank - this.pieceRank == 1) {
+                } else if (endRank - this.pieceRank == 1 && Chess.spotsTaken.get(new Square(endFile, endRank)) == null) {
                     firstMove = false;
                     return true;
                 }
@@ -49,14 +49,14 @@ public class Pawn extends ReturnPiece {
             if (this.pieceFile.equals(endFile)) {
                 if (this.pieceRank - endRank > 2) {
                     return false;
-                } else if (this.pieceRank - endRank == 2) {
+                } else if (this.pieceRank - endRank == 2 && Chess.spotsTaken.get(new Square(endFile, endRank)) == null && Chess.spotsTaken.get(new Square(endFile, endRank + 1)) == null) {
                     if (firstMove) {
                         firstMove = false;
                         return true;
                     } else {
                         return false;
                     }
-                } else if (this.pieceRank - endRank == 1) {
+                } else if (this.pieceRank - endRank == 1 && Chess.spotsTaken.get(new Square(endFile, endRank)) == null) {
                     firstMove = false;
                     return true;
                 }
