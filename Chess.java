@@ -13,6 +13,9 @@ public class Chess {
 	static ReturnPlay rp = new ReturnPlay();
 	static HashMap<Square, ReturnPiece> spotsTaken;
 	static Player playerToMove;
+	static ReturnPiece enPassantPiece;
+	static boolean enPassantVulerable;
+	static boolean enPassantAccepted;
 
 	// static Player playerToMove;
 	
@@ -27,8 +30,10 @@ public class Chess {
 	 */
 	public static ReturnPlay play(String move) {
 		// Resetting Message and Possible Move
+		enPassantAccepted = false;
 		Boolean viableMove = false;
 		rp.message = null;
+		
 
 		// If Play resigns
 		if (move.toLowerCase().equals("resign")) {
@@ -156,11 +161,18 @@ public class Chess {
 			// preCheck = checkChecker((playerToMove.ordinal() == 0) ? whiteKing : blackKing, (playerToMove.ordinal() == 0) ? Player.white : Player.black);
 		} 
 		System.out.println(viableMove);
-		ReturnPiece removedPiece = null;
+		ReturnPiece removedPiece = (enPassantAccepted) ? enPassantPiece : null;
 		if (viableMove) {
 			if (endPiece != null) {
 				for (int i = 0; i < rp.piecesOnBoard.size(); i++) {
 					if (rp.piecesOnBoard.get(i).equals(endPiece)) {
+						removedPiece = rp.piecesOnBoard.remove(i);
+						spotsTaken.put(new Square(removedPiece.pieceFile, removedPiece.pieceRank), null);
+					}
+				}
+			} else if (removedPiece != null) {
+				for (int i = 0; i < rp.piecesOnBoard.size(); i++) {
+					if (rp.piecesOnBoard.get(i).equals(enPassantPiece)) {
 						removedPiece = rp.piecesOnBoard.remove(i);
 						spotsTaken.put(new Square(removedPiece.pieceFile, removedPiece.pieceRank), null);
 					}
@@ -504,11 +516,21 @@ public class Chess {
 			} else {
 				playerToMove = Player.white;
 			}
+			if (enPassantVulerable) {
+				enPassantPiece = currentPiece;
+			} else {
+				enPassantPiece = null;
+			}
 		}  else {
 			if (playerToMove.equals(Player.white)) {
 				playerToMove = Player.black;
 			} else {
 				playerToMove = Player.white;
+			}
+			if (enPassantVulerable) {
+				enPassantPiece = currentPiece;
+			} else {
+				enPassantPiece = null;
 			}
 		}
 
