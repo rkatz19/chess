@@ -30,22 +30,13 @@ public class Chess {
 		Boolean viableMove = false;
 		rp.message = null;
 
-		// If Play resigns
-		if (move.toLowerCase().equals("resign")) {
-			if (playerToMove.equals(Player.white)) {
-				rp.message = Message.RESIGN_BLACK_WINS;
-			} else {
-				rp.message = Message.RESIGN_WHITE_WINS;
-			}
-		}
-
 		// Getting move information
 		PieceFile startPieceFile;
 		int startPieceRank;
 		PieceFile endPieceFile;
 		int endPieceRank;
 
-		if (move.equals("resign")) {
+		if (move.toLowerCase().equals("resign")) {
 			if (playerToMove.equals(Player.white)) {
 				rp.message = Message.RESIGN_BLACK_WINS;
 				return rp;
@@ -67,10 +58,18 @@ public class Chess {
 		}
 				
 		String additionalInfo = "";
+		String[] additionalInfoList = null;
 		if (move.length() > 6) {
 			additionalInfo = move.substring(6).toUpperCase();
+			additionalInfoList = additionalInfo.split(" ");
 		}
-		if (!additionalInfo.equals("Q") && !additionalInfo.equals("N") && !additionalInfo.equals("R") && !additionalInfo.equals("B") && !additionalInfo.equals("DRAW?") && !additionalInfo.equals("")) {
+
+		if (additionalInfoList != null && !additionalInfoList[0].equals("Q") && !additionalInfoList[0].equals("N") && !additionalInfoList[0].equals("R") && !additionalInfoList[0].equals("B") && !additionalInfoList[0].equals("DRAW?")) {	
+			rp.message = Message.ILLEGAL_MOVE;
+			return rp;
+		} 
+		
+		if (additionalInfoList != null && ((additionalInfoList.length > 1 && !additionalInfoList[1].equals("DRAW?")) || additionalInfoList.length > 2)) {
 			rp.message = Message.ILLEGAL_MOVE;
 			return rp;
 		}
@@ -195,33 +194,35 @@ public class Chess {
 					rp.piecesOnBoard.remove(i);
 				}
 			}
-
-			if (additionalInfo.equals("Q") || additionalInfo.equals("")) {
-				ReturnPiece promotedPiece = new Queen((playerToMove.equals(Player.white)) ? PieceType.WQ : PieceType.BQ, endPieceFile, endPieceRank);
-				rp.piecesOnBoard.add(promotedPiece);
-				spotsTaken.put(new Square(endPieceFile, endPieceRank), promotedPiece);
-			} else if (additionalInfo.equals("N")) {
-				ReturnPiece promotedPiece = new Knight((playerToMove.equals(Player.white)) ? PieceType.WN : PieceType.BN, endPieceFile, endPieceRank);
-				rp.piecesOnBoard.add(promotedPiece);
-				spotsTaken.put(new Square(endPieceFile, endPieceRank), promotedPiece);
-			} else if (additionalInfo.equals("R")) {
-				ReturnPiece promotedPiece = new Rook((playerToMove.equals(Player.white)) ? PieceType.WR : PieceType.BR, endPieceFile, endPieceRank, false);
-				rp.piecesOnBoard.add(promotedPiece);
-				spotsTaken.put(new Square(endPieceFile, endPieceRank), promotedPiece);
-			} else if (additionalInfo.equals("B")) {
-				ReturnPiece promotedPiece = new Bishop((playerToMove.equals(Player.white)) ? PieceType.WB : PieceType.BB, endPieceFile, endPieceRank);
-				rp.piecesOnBoard.add(promotedPiece);
-				spotsTaken.put(new Square(endPieceFile, endPieceRank), promotedPiece);
-			} else {
-				viableMove = false;
-				currentPiece.pieceFile = startPieceFile;
-				currentPiece.pieceRank = startPieceRank;
-				if (removedPiece != null) {
-					rp.piecesOnBoard.add(removedPiece);
-					spotsTaken.put(new Square(removedPiece.pieceFile, removedPiece.pieceRank), removedPiece);
+			if (additionalInfoList != null) {
+				if (additionalInfoList[0].equals("Q") || additionalInfo.equals("")) {
+					ReturnPiece promotedPiece = new Queen((playerToMove.equals(Player.white)) ? PieceType.WQ : PieceType.BQ, endPieceFile, endPieceRank);
+					rp.piecesOnBoard.add(promotedPiece);
+					spotsTaken.put(new Square(endPieceFile, endPieceRank), promotedPiece);
+				} else if (additionalInfoList[0].equals("N")) {
+					ReturnPiece promotedPiece = new Knight((playerToMove.equals(Player.white)) ? PieceType.WN : PieceType.BN, endPieceFile, endPieceRank);
+					rp.piecesOnBoard.add(promotedPiece);
+					spotsTaken.put(new Square(endPieceFile, endPieceRank), promotedPiece);
+				} else if (additionalInfoList[0].equals("R")) {
+					ReturnPiece promotedPiece = new Rook((playerToMove.equals(Player.white)) ? PieceType.WR : PieceType.BR, endPieceFile, endPieceRank, false);
+					rp.piecesOnBoard.add(promotedPiece);
+					spotsTaken.put(new Square(endPieceFile, endPieceRank), promotedPiece);
+				} else if (additionalInfoList[0].equals("B")) {
+					ReturnPiece promotedPiece = new Bishop((playerToMove.equals(Player.white)) ? PieceType.WB : PieceType.BB, endPieceFile, endPieceRank);
+					rp.piecesOnBoard.add(promotedPiece);
+					spotsTaken.put(new Square(endPieceFile, endPieceRank), promotedPiece);
+				} else {
+					viableMove = false;
+					currentPiece.pieceFile = startPieceFile;
+					currentPiece.pieceRank = startPieceRank;
+					if (removedPiece != null) {
+						rp.piecesOnBoard.add(removedPiece);
+						spotsTaken.put(new Square(removedPiece.pieceFile, removedPiece.pieceRank), removedPiece);
+					}
+					spotsTaken.put(new Square(currentPiece.pieceFile, currentPiece.pieceRank), currentPiece);
 				}
-				spotsTaken.put(new Square(currentPiece.pieceFile, currentPiece.pieceRank), currentPiece);
 			}
+			
 		}
 
 		if (viableMove) {
@@ -491,7 +492,7 @@ public class Chess {
 			}
 		} 
 
-		if (viableMove && additionalInfo.equals("DRAW?")) {
+		if (viableMove && additionalInfoList != null && (additionalInfoList[0].equals("DRAW?") || additionalInfoList[1].equals("DRAW?"))) {
 			rp.message = Message.DRAW;
 			return rp;
 		}
