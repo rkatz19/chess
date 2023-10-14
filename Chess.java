@@ -131,13 +131,13 @@ public class Chess {
 					break;
 			}
 		}
-
+		System.out.println("Move is possible: " + viableMove);
 		if (endPiece != null) {
 			if ((playerToMove.equals(Player.white) && endPiece.pieceType.ordinal() <= 5) || (playerToMove.equals(Player.black) && endPiece.pieceType.ordinal() > 5)) {
 				viableMove = false;
 			} 
 		}
-		
+		System.out.println("Taking team piece: " + !viableMove);
 		// To check the conditions for check
 		// Boolean preCheck = false;
 		ArrayList<ReturnPiece> postCheck = new ArrayList<>();
@@ -272,6 +272,7 @@ public class Chess {
 			if(onBoard(king.pieceFile.ordinal(), king.pieceRank + 1) && spotsTaken.get(new Square(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank + 1)) == null && checkSpace(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank + 1, (playerToMove.ordinal() == 0) ? Player.black : Player.white).isEmpty()){
 				viableKingMoves.add(new Square(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank + 1));
 			}
+			System.out.println("Opposing Size: " + opposingCheck.size());
 			if(opposingCheck.size() == 1){
 				ReturnPiece checkingPiece = opposingCheck.get(0);
 				canTake = checkSpace(checkingPiece.pieceFile, checkingPiece.pieceRank, playerToMove);
@@ -314,15 +315,20 @@ public class Chess {
 						break;
 					case 3:
 						Bishop checkingBishop = (Bishop) checkingPiece;
-						if(checkingBishop.pieceFile.ordinal() > king.pieceFile.ordinal()){
-							if(checkingBishop.pieceRank > king.pieceRank){
+						System.out.println("Checking Bishop is located at: " + checkingBishop.pieceRank + checkingBishop.pieceFile);
+						System.out.println("Spot in question is located at: " + king.pieceRank + king.pieceFile);
+						if(checkingBishop.pieceFile.ordinal() > king.pieceFile.ordinal()){ // left
+							System.out.println("Going Left");
+							if(checkingBishop.pieceRank > king.pieceRank){ // down
+								System.out.println("Going Down");
 								for(int i = 1; i < Math.abs(king.pieceRank - checkingBishop.pieceRank); i++){
 									for(ReturnPiece p : checkSpace2(PieceFile.values()[king.pieceFile.ordinal() + i], king.pieceRank + i, playerToMove)){
 										viableBlock.add(p);
 									}
 								}
 							}
-							else if(checkingBishop.pieceRank < king.pieceRank){
+							else if(checkingBishop.pieceRank < king.pieceRank){ // up
+								System.out.println("Going Up");
 								for(int i = 1; i < Math.abs(king.pieceRank - checkingBishop.pieceRank); i++){
 									for(ReturnPiece p : checkSpace2(PieceFile.values()[king.pieceFile.ordinal() + i], king.pieceRank - i, playerToMove)){
 										viableBlock.add(p);
@@ -330,16 +336,20 @@ public class Chess {
 								}
 							}
 						}
-						else if(checkingBishop.pieceFile.ordinal() < king.pieceFile.ordinal()){
-							if(checkingBishop.pieceRank > king.pieceRank){
+						else if(checkingBishop.pieceFile.ordinal() < king.pieceFile.ordinal()){ // right
+							System.out.println("Going Right");
+							if(checkingBishop.pieceRank > king.pieceRank) { // down
+								System.out.println("Going Down");
 								for(int i = 1; i < Math.abs(checkingBishop.pieceFile.ordinal() - king.pieceFile.ordinal()); i++){
 									for(ReturnPiece p : checkSpace2(PieceFile.values()[king.pieceFile.ordinal() - i], king.pieceRank + i, playerToMove)){
 										viableBlock.add(p);
 									}
 								}
 							}
-							else if(checkingBishop.pieceRank > king.pieceRank){
+							else if (checkingBishop.pieceRank < king.pieceRank) { // up
+								System.out.println("Going Up");
 								for(int i = 1; i < Math.abs(checkingBishop.pieceFile.ordinal() - king.pieceFile.ordinal()); i++){
+									System.out.println("Checking Block for: " + PieceFile.values()[king.pieceFile.ordinal() - i] + (king.pieceRank - i) + " Player to move: " + playerToMove);
 									for(ReturnPiece p : checkSpace2(PieceFile.values()[king.pieceFile.ordinal() - i], king.pieceRank - i, playerToMove)){
 										viableBlock.add(p);
 									}
@@ -543,43 +553,42 @@ public class Chess {
 					case 0:
 						Pawn pawnInUse = (Pawn) rp.piecesOnBoard.get(i);
 						if (pawnInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Pawn " + pawnInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Pawn " + pawnInUse + " is checking:" + pieceFile + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 1:
 						Rook rookInUse = (Rook) rp.piecesOnBoard.get(i);
 						if (rookInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Rook " + rookInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Rook " + rookInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 2:
 						Knight knightInUse = (Knight) rp.piecesOnBoard.get(i);
 						if (knightInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Knight " + knightInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Knight " + knightInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 3:
 						Bishop bishopInUse = (Bishop) rp.piecesOnBoard.get(i);
 						if (bishopInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Bishop " + bishopInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Bishop " + bishopInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 4: 
 						King kingInUse = (King) rp.piecesOnBoard.get(i);
 						if (kingInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("King " + kingInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("King " + kingInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 5:
-						System.out.println(" 5 ");
 						Queen queenInUse = (Queen) rp.piecesOnBoard.get(i);
 						if (queenInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Queen " + queenInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Queen " + queenInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
@@ -590,42 +599,42 @@ public class Chess {
 
 						Pawn pawnInUse = (Pawn) rp.piecesOnBoard.get(i);
 						if (pawnInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Pawn " + pawnInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Pawn " + pawnInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 1:
 						Rook rookInUse = (Rook) rp.piecesOnBoard.get(i);
 						if (rookInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Rook " + rookInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Rook " + rookInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 2:
 						Knight knightInUse = (Knight) rp.piecesOnBoard.get(i);
 						if (knightInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Knight " + knightInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Knight " + knightInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 3:
 						Bishop bishopInUse = (Bishop) rp.piecesOnBoard.get(i);
 						if (bishopInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Bishop " + bishopInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Bishop " + bishopInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 4: 
 						Queen queenInUse = (Queen) rp.piecesOnBoard.get(i);
 						if (queenInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Queen " + queenInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Queen " + queenInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 5:
 						King kingInUse = (King) rp.piecesOnBoard.get(i);
 						if (kingInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("King " + kingInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("King " + kingInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
@@ -643,36 +652,35 @@ public class Chess {
 					case 0:
 						Pawn pawnInUse = (Pawn) rp.piecesOnBoard.get(i);
 						if (pawnInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Pawn " + pawnInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Pawn " + pawnInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 1:
 						Rook rookInUse = (Rook) rp.piecesOnBoard.get(i);
 						if (rookInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Rook " + rookInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Rook " + rookInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 2:
 						Knight knightInUse = (Knight) rp.piecesOnBoard.get(i);
 						if (knightInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Knight " + knightInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Knight " + knightInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 3:
 						Bishop bishopInUse = (Bishop) rp.piecesOnBoard.get(i);
 						if (bishopInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Bishop " + bishopInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("2 Bishop " + bishopInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 5:
-						System.out.println(" 5 ");
 						Queen queenInUse = (Queen) rp.piecesOnBoard.get(i);
 						if (queenInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Queen " + queenInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Queen " + queenInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
@@ -683,35 +691,35 @@ public class Chess {
 
 						Pawn pawnInUse = (Pawn) rp.piecesOnBoard.get(i);
 						if (pawnInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Pawn " + pawnInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Pawn " + pawnInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 1:
 						Rook rookInUse = (Rook) rp.piecesOnBoard.get(i);
 						if (rookInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Rook " + rookInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Rook " + rookInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 2:
 						Knight knightInUse = (Knight) rp.piecesOnBoard.get(i);
 						if (knightInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Knight " + knightInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Knight " + knightInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 3:
 						Bishop bishopInUse = (Bishop) rp.piecesOnBoard.get(i);
 						if (bishopInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Bishop " + bishopInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Bishop " + bishopInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
 					case 4: 
 						Queen queenInUse = (Queen) rp.piecesOnBoard.get(i);
 						if (queenInUse.checkSpaces(pieceFile, pieceRank)) {
-							System.out.println("Queen " + queenInUse + " is checking:" + pieceFile + " " + pieceRank);
+							System.out.println("Queen " + queenInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
 						break;
