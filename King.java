@@ -22,12 +22,13 @@ public class King extends ReturnPiece {
         if (Chess.playerToMove.equals(Chess.Player.white) && this.pieceFile.equals(PieceFile.e) && this.pieceRank == 1) {
             if (endFile.equals(PieceFile.c) && endRank == 1 && firstMove) {
                 if (Chess.spotsTaken.get(new Square(PieceFile.b, 1)) == null && Chess.spotsTaken.get(new Square(PieceFile.c, 1)) == null && Chess.spotsTaken.get(new Square(PieceFile.d, 1)) == null) {
-                    if (Chess.spotsTaken.get(new Square(PieceFile.a, 1)) != null && Chess.spotsTaken.get(new Square(PieceFile.a, 1)).pieceType.ordinal() % 6 == 1) {
+                    if (Chess.spotsTaken.get(new Square(PieceFile.a, 1)) != null && Chess.spotsTaken.get(new Square(PieceFile.a, 1)).pieceType.ordinal() == 1) {
                         if (Chess.checkSpace(endFile, endRank, Chess.playerToMove).isEmpty()) {
                             Rook castlingRook = (Rook) Chess.spotsTaken.get(new Square(PieceFile.a, 1));
                             if (castlingRook.firstMove) {
                                 Chess.spotsTaken.put(new Square(PieceFile.d, 1), Chess.spotsTaken.get(new Square(PieceFile.a, 1)));
                                 Chess.spotsTaken.put(new Square(PieceFile.a, 1), null);
+                                castlingRook.pieceFile = PieceFile.d;
                                 castlingRook.firstMove = false;
                                 this.firstMove = false;
                                 return true;
