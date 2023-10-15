@@ -3,11 +3,25 @@ package chess;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+// Extra
+// import java.io.File;
+// import java.io.FileNotFoundException;
+
 public class PlayChess {
 
 	public static void main(String[] args) {
+		// Extra
+		// File inputFile = new File("chess/MagnusCarlsenvsSipkeErnst.txt");
+
 		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
+		// Scanner sc = null;
+		// try {
+		// 	sc = new Scanner(inputFile);
+		// } catch (FileNotFoundException e) {
+		// 	System.err.println("File not found: " + inputFile.getAbsolutePath());
+		// }
+
 		Chess.start();
 		
 		String line = sc.nextLine();

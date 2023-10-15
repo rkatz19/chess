@@ -159,7 +159,8 @@ public class Chess {
 			}
 			// preCheck = checkChecker((playerToMove.ordinal() == 0) ? whiteKing : blackKing, (playerToMove.ordinal() == 0) ? Player.white : Player.black);
 		} 
-		System.out.println(viableMove);
+		System.out.println("Viable Move: " + viableMove);
+		System.out.println("Piece to take" + endPiece);
 		ReturnPiece removedPiece = (enPassantAccepted) ? enPassantPiece : null;
 		if (viableMove) {
 			if (endPiece != null) {
@@ -241,6 +242,7 @@ public class Chess {
 
 		System.out.println("postcheck: " + postCheck);
 		System.out.println("opposingCheck: " + opposingCheck);
+		System.out.println("Pieces on Board: " + rp.piecesOnBoard);
 
 		
 		if (viableMove && !opposingCheck.isEmpty()) {
@@ -580,7 +582,7 @@ public class Chess {
 						break;
 					case 4: 
 						King kingInUse = (King) rp.piecesOnBoard.get(i);
-						if (kingInUse.checkSpaces(pieceFile, pieceRank)) {
+						if (kingInUse.checkSpaces(pieceFile, pieceRank) && checkSpace(pieceFile, pieceRank, (playerToMove.equals(Player.white)) ? Player.black : Player.white).isEmpty()) {
 							System.out.println("King " + kingInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
@@ -633,7 +635,7 @@ public class Chess {
 						break;
 					case 5:
 						King kingInUse = (King) rp.piecesOnBoard.get(i);
-						if (kingInUse.checkSpaces(pieceFile, pieceRank)) {
+						if (kingInUse.checkSpaces(pieceFile, pieceRank) && checkSpace(pieceFile, pieceRank, (playerToMove.equals(Player.white)) ? Player.black : Player.white).isEmpty()) {
 							System.out.println("King " + kingInUse + " is checking:" + pieceFile + "" + pieceRank);
 							checkingPieces.add(rp.piecesOnBoard.get(i));
 						}
@@ -759,7 +761,6 @@ public class Chess {
 
 
 		newPiece = new Rook(PieceType.WR, PieceFile.a, 1);
-		piecesOnBoard.add(newPiece);
 		piecesOnBoard.add(newPiece);
 		spotsTaken.put(new Square(PieceFile.a, 1), newPiece);
 
