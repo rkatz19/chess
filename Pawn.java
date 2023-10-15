@@ -1,7 +1,7 @@
 package chess;
 
 public class Pawn extends ReturnPiece {
-    boolean firstMove;
+    public boolean firstMove;
     
     public Pawn (PieceType type, PieceFile file, int rank) {
         super(type, file, rank);
@@ -13,6 +13,7 @@ public class Pawn extends ReturnPiece {
             return false;
         }
         // Not taking Piece
+        
         if (this.pieceType == PieceType.WP) {
             if (this.pieceFile.equals(endFile)) {
                 if (endRank - this.pieceRank > 2) {
