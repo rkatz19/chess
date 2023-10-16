@@ -46,7 +46,7 @@ public class King extends ReturnPiece {
                             System.out.println("Will not place in check");
                             Rook castlingRook = (Rook) Chess.spotsTaken.get(new Square(PieceFile.h, 1));
                             if (castlingRook.firstMove) {
-                                Chess.spotsTaken.put(new Square(PieceFile.f, 1), Chess.spotsTaken.get(new Square(PieceFile.a, 1)));
+                                Chess.spotsTaken.put(new Square(PieceFile.f, 1), Chess.spotsTaken.get(new Square(PieceFile.h, 1)));
                                 Chess.spotsTaken.put(new Square(PieceFile.h, 1), null);
                                 castlingRook.pieceFile = PieceFile.f;
                                 castlingRook.firstMove = false;

@@ -80,7 +80,9 @@ public class Chess {
 		}
 
 		// Getting piece selected and who's turn to move
+		// System.out.println(startPieceFile + "" + startPieceRank);
 		ReturnPiece currentPiece = spotsTaken.get(new Square(startPieceFile, startPieceRank));
+		// System.out.println(currentPiece);
 		if (currentPiece == null) {
 			rp.message = Message.ILLEGAL_MOVE;
 			return rp;
@@ -263,7 +265,12 @@ public class Chess {
 		System.out.println("opposingCheck: " + opposingCheck);
 		System.out.println("Pieces on Board: " + rp.piecesOnBoard);
 
-		
+		if (enPassantVulerable) {
+			enPassantPiece = currentPiece;
+		} else {
+			enPassantPiece = null;
+		}
+
 		if (viableMove && !opposingCheck.isEmpty()) {
 			ArrayList<Square> viableKingMoves = new ArrayList<>();
 			ArrayList<ReturnPiece> canTake = new ArrayList<>();
@@ -294,9 +301,26 @@ public class Chess {
 				viableKingMoves.add(new Square(PieceFile.values()[king.pieceFile.ordinal()], king.pieceRank + 1));
 			}
 			System.out.println("Opposing Size: " + opposingCheck.size());
+
 			if(opposingCheck.size() == 1){
 				ReturnPiece checkingPiece = opposingCheck.get(0);
 				canTake = checkSpace(checkingPiece.pieceFile, checkingPiece.pieceRank, playerToMove);
+
+				if (checkingPiece.pieceType.ordinal() % 6 == 0 && checkingPiece.equals(enPassantPiece)) {
+					for (ReturnPiece pawn : rp.piecesOnBoard) {
+						if (pawn.pieceType.ordinal() == 0 && playerToMove.equals(Player.black)) {
+							if (((Pawn) pawn).checkSpaces(checkingPiece.pieceFile, checkingPiece.pieceRank + 1)) {
+								
+								canTake.add(pawn);
+							}
+						} else if (pawn.pieceType.ordinal() == 6 && playerToMove.equals(Player.white)) {
+							// System.out.println(pawn.pieceFile + "" + pawn.pieceRank + "Cannot Take" + ((Pawn) pawn).checkSpaces(checkingPiece.pieceFile, checkingPiece.pieceRank - 1));
+							if (((Pawn) pawn).checkSpaces(checkingPiece.pieceFile, checkingPiece.pieceRank - 1)) {
+								canTake.add(pawn);
+							}
+						}
+					}
+				} 
 
 				switch (checkingPiece.pieceType.ordinal() % 6) {
 					case 1:
@@ -580,21 +604,11 @@ public class Chess {
 			} else {
 				playerToMove = Player.white;
 			}
-			if (enPassantVulerable) {
-				enPassantPiece = currentPiece;
-			} else {
-				enPassantPiece = null;
-			}
-		}  else {
+		} else {
 			if (playerToMove.equals(Player.white)) {
 				playerToMove = Player.black;
 			} else {
 				playerToMove = Player.white;
-			}
-			if (enPassantVulerable) {
-				enPassantPiece = currentPiece;
-			} else {
-				enPassantPiece = null;
 			}
 		}
 

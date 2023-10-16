@@ -16,6 +16,7 @@ public class Rook extends ReturnPiece {
 		if (this.pieceFile.equals(endFile) && endRank == this.pieceRank) {
             return false;
         }
+		// System.out.println(this.pieceRank + " " + this.pieceFile);
 		if (endRank - this.pieceRank > 0 && endFile.ordinal() - this.pieceFile.ordinal() == 0) { // up
 			for (int i = 1; i < Math.abs(endRank - this.pieceRank); i++) {
 				if (Chess.spotsTaken.get(new Square(PieceFile.values()[this.pieceFile.ordinal()], this.pieceRank + i)) != null) {
@@ -29,6 +30,7 @@ public class Rook extends ReturnPiece {
 				}
 			}
 		} else if (endRank - this.pieceRank == 0 && endFile.ordinal() - this.pieceFile.ordinal() < 0) { // Left
+			// System.out.println("k");
 			for (int i = 1; i < Math.abs(endFile.ordinal() - this.pieceFile.ordinal()); i++) {
 				if (Chess.spotsTaken.get(new Square(PieceFile.values()[this.pieceFile.ordinal() - i], this.pieceRank)) != null) {
 					return false;
