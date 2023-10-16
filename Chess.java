@@ -529,7 +529,7 @@ public class Chess {
 						spotsTaken.put(new Square(blockingPiece.pieceFile, blockingPiece.pieceRank), null);
 					}
 				}
-				if (!checkSpace((playerToMove).equals(Player.white) ? blackKing.pieceFile : whiteKing.pieceFile, (playerToMove).equals(Player.white) ? blackKing.pieceRank : whiteKing.pieceRank, (playerToMove).equals(Player.white) ? Player.black : Player.white).isEmpty()) {
+				if (checkSpace((playerToMove).equals(Player.white) ? blackKing.pieceFile : whiteKing.pieceFile, (playerToMove).equals(Player.white) ? blackKing.pieceRank : whiteKing.pieceRank, (playerToMove).equals(Player.white) ? Player.black : Player.white).size() >= 2) {
 					viableBlock.remove(i);
 					i--;
 				}
