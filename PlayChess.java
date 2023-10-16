@@ -11,16 +11,16 @@ public class PlayChess {
 
 	public static void main(String[] args) {
 		// Extra
-		File inputFile = new File("chess\\tests\\scholarsmate.txt");
+		//File inputFile = new File("chess\\tests\\scholarsmate.txt");
 
 		// TODO Auto-generated method stub
-		Scanner sc = null;
-		//Scanner sc = new Scanner(System.in);
-		try {
-			sc = new Scanner(inputFile);
-		} catch (FileNotFoundException e) {
-			System.err.println("File not found: " + inputFile.getAbsolutePath());
-		}
+		//Scanner sc = null;
+		Scanner sc = new Scanner(System.in);
+		// try {
+		// 	sc = new Scanner(inputFile);
+		// } catch (FileNotFoundException e) {
+		// 	System.err.println("File not found: " + inputFile.getAbsolutePath());
+		// }
 
 		Chess.start();
 		
