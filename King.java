@@ -7,6 +7,7 @@ public class King extends ReturnPiece {
         this.pieceType = type;
         this.pieceFile = file;
         this.pieceRank = rank;
+        firstMove = true;
     }
 
     public boolean checkSpaces (PieceFile endFile, int endRank) {
@@ -22,14 +23,15 @@ public class King extends ReturnPiece {
             }
         }
 
-        // System.out.println(opposingKing.pieceRank + "" + opposingKing.pieceFile);
+        
         if (Math.abs(opposingKing.pieceRank - endRank) <= 1 && Math.abs(opposingKing.pieceFile.ordinal() - endFile.ordinal()) <= 1) {
             return false;
         }
-
+        // System.out.println(opposingKing.pieceRank + "" + opposingKing.pieceFile);
 
         if (Chess.playerToMove.equals(Chess.Player.white) && this.pieceFile.equals(PieceFile.e) && this.pieceRank == 1) {
             if (endFile.equals(PieceFile.c) && endRank == 1 && firstMove) {
+                System.out.println("Castling Left");
                 if (Chess.spotsTaken.get(new Square(PieceFile.b, 1)) == null && Chess.spotsTaken.get(new Square(PieceFile.c, 1)) == null && Chess.spotsTaken.get(new Square(PieceFile.d, 1)) == null) {
                     if (Chess.spotsTaken.get(new Square(PieceFile.a, 1)) != null && Chess.spotsTaken.get(new Square(PieceFile.a, 1)).pieceType.ordinal() == 1) {
                         if (Chess.checkSpace(endFile, endRank, Chess.playerToMove).isEmpty()) {
