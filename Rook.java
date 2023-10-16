@@ -1,8 +1,5 @@
 package chess;
 
-import chess.ReturnPiece.PieceFile;
-import chess.ReturnPiece.PieceType;
-
 public class Rook extends ReturnPiece {
 	public boolean firstMove;
     public Rook (PieceType type, PieceFile file, int rank) {
