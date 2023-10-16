@@ -85,7 +85,7 @@ public class King extends ReturnPiece {
                         if (Chess.checkSpace(endFile, endRank, Chess.playerToMove).isEmpty()) {
                             Rook castlingRook = (Rook) Chess.spotsTaken.get(new Square(PieceFile.h, 8));
                             if (castlingRook.firstMove) {
-                                Chess.spotsTaken.put(new Square(PieceFile.f, 8), Chess.spotsTaken.get(new Square(PieceFile.a, 8)));
+                                Chess.spotsTaken.put(new Square(PieceFile.f, 8), Chess.spotsTaken.get(new Square(PieceFile.h, 8)));
                                 Chess.spotsTaken.put(new Square(PieceFile.h, 8), null);
                                 castlingRook.pieceFile = PieceFile.f;
                                 castlingRook.firstMove = false;
