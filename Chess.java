@@ -587,7 +587,7 @@ public class Chess {
 			}
 		} 
 
-		if (viableMove && additionalInfoList != null && (additionalInfoList[0].equals("DRAW?") || additionalInfoList[1].equals("DRAW?"))) {
+		if (viableMove && additionalInfoList != null && (additionalInfoList[0].equals("DRAW?") || (additionalInfoList.length > 1 && additionalInfoList[1].equals("DRAW?")))) {
 			rp.message = Message.DRAW;
 			return rp;
 		}
