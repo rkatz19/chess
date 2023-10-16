@@ -537,6 +537,23 @@ public class Chess {
 				spotsTaken.put(new Square(blockingPiece.pieceFile, blockingPiece.pieceRank), blockingPiece);
 			}
 
+			//Check Viable Takes
+			for (int i = 0; i < canTake.size(); i++) {
+				ReturnPiece takingPiece = null;
+				for (int j = 0; j < rp.piecesOnBoard.size(); j++) {
+					if (rp.piecesOnBoard.get(j).equals(canTake.get(i))) {
+						takingPiece = rp.piecesOnBoard.remove(j);
+						spotsTaken.put(new Square(takingPiece.pieceFile, takingPiece.pieceRank), null);
+					}
+				}
+				if (checkSpace((playerToMove).equals(Player.white) ? blackKing.pieceFile : whiteKing.pieceFile, (playerToMove).equals(Player.white) ? blackKing.pieceRank : whiteKing.pieceRank, (playerToMove).equals(Player.white) ? Player.black : Player.white).size() >= 2) {
+					canTake.remove(i);
+					i--;
+				}
+				rp.piecesOnBoard.add(takingPiece);
+				spotsTaken.put(new Square(takingPiece.pieceFile, takingPiece.pieceRank), takingPiece);
+			}
+
 			System.out.println("viable moves: " + viableKingMoves);
 			System.out.println("viable block: " + viableBlock);
 			System.out.println("can take: " + canTake);
