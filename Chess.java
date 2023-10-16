@@ -519,6 +519,24 @@ public class Chess {
 				}
 				
 			}
+
+			//Check Viable Blocks
+			for (int i = 0; i < viableBlock.size(); i++) {
+				ReturnPiece blockingPiece = null;
+				for (int j = 0; j < rp.piecesOnBoard.size(); j++) {
+					if (rp.piecesOnBoard.get(j).equals(viableBlock.get(i))) {
+						blockingPiece = rp.piecesOnBoard.remove(j);
+						spotsTaken.put(new Square(blockingPiece.pieceFile, blockingPiece.pieceRank), null);
+					}
+				}
+				if (!checkSpace((playerToMove).equals(Player.white) ? blackKing.pieceFile : whiteKing.pieceFile, (playerToMove).equals(Player.white) ? blackKing.pieceRank : whiteKing.pieceRank, (playerToMove).equals(Player.white) ? Player.black : Player.white).isEmpty()) {
+					viableBlock.remove(i);
+					i--;
+				}
+				rp.piecesOnBoard.add(blockingPiece);
+				spotsTaken.put(new Square(blockingPiece.pieceFile, blockingPiece.pieceRank), blockingPiece);
+			}
+
 			System.out.println("viable moves: " + viableKingMoves);
 			System.out.println("viable block: " + viableBlock);
 			System.out.println("can take: " + canTake);
