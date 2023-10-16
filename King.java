@@ -31,7 +31,7 @@ public class King extends ReturnPiece {
 
         if (Chess.playerToMove.equals(Chess.Player.white) && this.pieceFile.equals(PieceFile.e) && this.pieceRank == 1) {
             if (endFile.equals(PieceFile.c) && endRank == 1 && firstMove) {
-                System.out.println("Castling Left");
+                //System.out.println("Castling Left");
                 if (Chess.spotsTaken.get(new Square(PieceFile.b, 1)) == null && Chess.spotsTaken.get(new Square(PieceFile.c, 1)) == null && Chess.spotsTaken.get(new Square(PieceFile.d, 1)) == null) {
                     if (Chess.spotsTaken.get(new Square(PieceFile.a, 1)) != null && Chess.spotsTaken.get(new Square(PieceFile.a, 1)).pieceType.ordinal() == 1) {
                         if (Chess.checkSpace(endFile, endRank, Chess.playerToMove).isEmpty()) {
@@ -48,13 +48,13 @@ public class King extends ReturnPiece {
                     }
                 }
             } else if (endFile.equals(PieceFile.g) && endRank == 1 && firstMove) {
-                System.out.println("Castling Right");
+                //System.out.println("Castling Right");
                 if (Chess.spotsTaken.get(new Square(PieceFile.f, 1)) == null && Chess.spotsTaken.get(new Square(PieceFile.g, 1)) == null) {
-                    System.out.println("Path is clear");
+                    //System.out.println("Path is clear");
                     if (Chess.spotsTaken.get(new Square(PieceFile.h, 1)) != null && Chess.spotsTaken.get(new Square(PieceFile.h, 1)).pieceType.ordinal() % 6 == 1) {
-                        System.out.println("Rook exists is good");
+                        //System.out.println("Rook exists is good");
                         if (Chess.checkSpace(endFile, endRank, Chess.playerToMove).isEmpty()) {
-                            System.out.println("Will not place in check");
+                            //System.out.println("Will not place in check");
                             Rook castlingRook = (Rook) Chess.spotsTaken.get(new Square(PieceFile.h, 1));
                             if (castlingRook.firstMove) {
                                 Chess.spotsTaken.put(new Square(PieceFile.f, 1), Chess.spotsTaken.get(new Square(PieceFile.h, 1)));
@@ -88,11 +88,11 @@ public class King extends ReturnPiece {
                     }
                 }
             } else if (endFile.equals(PieceFile.g) && endRank == 8 && firstMove) {
-                System.out.println("Castling Right");
+                //System.out.println("Castling Right");
                 if (Chess.spotsTaken.get(new Square(PieceFile.f, 8)) == null && Chess.spotsTaken.get(new Square(PieceFile.g, 8)) == null) {
-                    System.out.println("Path is clear");
+                    //System.out.println("Path is clear");
                     if (Chess.spotsTaken.get(new Square(PieceFile.h, 8)) != null && Chess.spotsTaken.get(new Square(PieceFile.h, 8)).pieceType.ordinal() % 6 == 1) {
-                        System.out.println("Rook exists is good");
+                        //System.out.println("Rook exists is good");
                         if (Chess.checkSpace(endFile, endRank, Chess.playerToMove).isEmpty()) {
                             Rook castlingRook = (Rook) Chess.spotsTaken.get(new Square(PieceFile.h, 8));
                             if (castlingRook.firstMove) {
