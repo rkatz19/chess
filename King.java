@@ -11,14 +11,21 @@ public class King extends ReturnPiece {
         if (this.pieceFile.equals(endFile) && endRank == this.pieceRank) {
             return false;
         }
-        try {
-            if (Math.abs(endFile.ordinal() - this.pieceFile.ordinal()) <= 1 && Math.abs(endRank - pieceRank) <= 1) {
-                firstMove = false;
-                return true;
+        
+
+        ReturnPiece opposingKing = null;
+        for (ReturnPiece piece : Chess.rp.piecesOnBoard) {
+            if ((piece.pieceType.ordinal() == 5 && Chess.playerToMove.equals(Chess.Player.black)) || (piece.pieceType.ordinal() == 10 && Chess.playerToMove.equals(Chess.Player.white))) {
+                opposingKing = piece;
             }
-        } catch (Exception e) {
+        }
+
+        // System.out.println(opposingKing.pieceRank + "" + opposingKing.pieceFile);
+        if (Math.abs(opposingKing.pieceRank - endRank) <= 1 && Math.abs(opposingKing.pieceFile.ordinal() - endFile.ordinal()) <= 1) {
             return false;
         }
+
+
         if (Chess.playerToMove.equals(Chess.Player.white) && this.pieceFile.equals(PieceFile.e) && this.pieceRank == 1) {
             if (endFile.equals(PieceFile.c) && endRank == 1 && firstMove) {
                 if (Chess.spotsTaken.get(new Square(PieceFile.b, 1)) == null && Chess.spotsTaken.get(new Square(PieceFile.c, 1)) == null && Chess.spotsTaken.get(new Square(PieceFile.d, 1)) == null) {
@@ -97,6 +104,16 @@ public class King extends ReturnPiece {
                 }
             }
         }
+
+        try {
+            if (Math.abs(endFile.ordinal() - this.pieceFile.ordinal()) <= 1 && Math.abs(endRank - pieceRank) <= 1) {
+                firstMove = false;
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+
         return false;
     }
 }

@@ -11,7 +11,7 @@ public class PlayChess {
 
 	public static void main(String[] args) {
 		// Extra
-		File inputFile = new File("chess\\KasparovKarpov.txt");
+		File inputFile = new File("chess\\kingsKiss.txt");
 
 		// TODO Auto-generated method stub
 		//Scanner sc = null;

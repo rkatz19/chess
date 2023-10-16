@@ -140,6 +140,7 @@ public class Chess {
 					break;
 			}
 		}
+		
 		System.out.println("Move is possible: " + viableMove);
 		if (endPiece != null) {
 			if ((playerToMove.equals(Player.white) && endPiece.pieceType.ordinal() <= 5) || (playerToMove.equals(Player.black) && endPiece.pieceType.ordinal() > 5)) {
@@ -666,7 +667,7 @@ public class Chess {
 					case 4: 
 						King kingInUse = (King) rp.piecesOnBoard.get(i);
 						neverMoved = false;
-						if (kingInUse.firstMove) neverMoved = true; 
+						if (kingInUse.firstMove) neverMoved = true;
 						if (kingInUse.checkSpaces(pieceFile, pieceRank) && checkSpace(pieceFile, pieceRank, (playerToMove.equals(Player.white)) ? Player.black : Player.white).isEmpty()) {
 							System.out.println("King " + kingInUse + " is checking:" + pieceFile + "" + pieceRank);
 							kingInUse.firstMove = (neverMoved) ? true : false;
