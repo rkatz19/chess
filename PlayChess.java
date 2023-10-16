@@ -11,11 +11,11 @@ public class PlayChess {
 
 	public static void main(String[] args) {
 		// Extra
-		File inputFile = new File("chess/DukeofBrunswickvsPaulMorphy.txt");
+		File inputFile = new File("chess/jamesmate.txt");
 
 		// TODO Auto-generated method stub
-		//Scanner sc = new Scanner(System.in);
-		Scanner sc = null;
+		//Scanner sc = null;
+		Scanner sc = new Scanner(System.in);
 		try {
 			sc = new Scanner(inputFile);
 		} catch (FileNotFoundException e) {
