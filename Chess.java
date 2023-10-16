@@ -437,7 +437,7 @@ public class Chess {
 										}
 									}
 								}
-								else if(checkingQueen.pieceRank > king.pieceRank){
+								else if(checkingQueen.pieceRank < king.pieceRank){
 									for(int i = 1; i < Math.abs(checkingQueen.pieceFile.ordinal() - king.pieceFile.ordinal()); i++){
 										for(ReturnPiece p : checkSpace2(PieceFile.values()[king.pieceFile.ordinal() - i], king.pieceRank - i, playerToMove)){
 											viableBlock.add(p);
