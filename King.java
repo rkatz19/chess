@@ -2,9 +2,11 @@ package chess;
 
 public class King extends ReturnPiece {
     public boolean firstMove;
+
     public King (PieceType type, PieceFile file, int rank) {
-        super(type, file, rank);
-        firstMove = true;
+        this.pieceType = type;
+        this.pieceFile = file;
+        this.pieceRank = rank;
     }
 
     public boolean checkSpaces (PieceFile endFile, int endRank) {

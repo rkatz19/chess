@@ -1,5 +1,7 @@
 package chess;
 
+import java.util.ArrayList;
+
 class ReturnPiece {
 	static enum PieceType {WP, WR, WN, WB, WQ, WK, 
 		            BP, BR, BN, BB, BK, BQ};
@@ -8,17 +10,9 @@ class ReturnPiece {
 	PieceType pieceType;
 	PieceFile pieceFile;
 	int pieceRank;  // 1..8
-
-    public ReturnPiece(PieceType pieceType, PieceFile pieceFile, int pieceRank) {
-        this.pieceType = pieceType;
-        this.pieceFile = pieceFile;
-        this.pieceRank = pieceRank;
-    }
-
 	public String toString() {
 		return ""+pieceFile+pieceRank+":"+pieceType;
 	}
-
 	public boolean equals(Object other) {
 		if (other == null || !(other instanceof ReturnPiece)) {
 			return false;
@@ -28,5 +22,4 @@ class ReturnPiece {
 				pieceFile == otherPiece.pieceFile &&
 				pieceRank == otherPiece.pieceRank;
 	}
-
 }

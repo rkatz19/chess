@@ -1,8 +1,11 @@
 package chess;
 
 public class Knight extends ReturnPiece {
+    
     public Knight (PieceType type, PieceFile file, int rank) {
-        super(type, file, rank);
+        this.pieceType = type;
+        this.pieceFile = file;
+        this.pieceRank = rank;
     }
 
     public boolean checkSpaces (PieceFile endFile, int endRank) {

@@ -1,14 +1,21 @@
 package chess;
 
-public class Rook extends ReturnPiece {
-	boolean firstMove;
-	public Rook (PieceType type, PieceFile file, int rank) {
-		super(type, file, rank);
-		firstMove = true;
-	}
+import chess.ReturnPiece.PieceFile;
+import chess.ReturnPiece.PieceType;
 
-	public Rook (PieceType type, PieceFile file, int rank, boolean firstMove) {
-        super(type, file, rank);
+public class Rook extends ReturnPiece {
+	public boolean firstMove;
+    public Rook (PieceType type, PieceFile file, int rank) {
+        this.pieceType = type;
+        this.pieceFile = file;
+        this.pieceRank = rank;
+        this.firstMove = true;
+    }
+
+    public Rook (PieceType type, PieceFile file, int rank, boolean firstMove) {
+        this.pieceType = type;
+        this.pieceFile = file;
+        this.pieceRank = rank;
         this.firstMove = firstMove;
     }
 

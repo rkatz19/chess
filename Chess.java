@@ -1,3 +1,6 @@
+// Alex Tan
+// Remington Katz
+
 package chess;
 
 import java.util.ArrayList;

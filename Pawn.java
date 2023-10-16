@@ -4,7 +4,9 @@ public class Pawn extends ReturnPiece {
     public boolean firstMove;
     
     public Pawn (PieceType type, PieceFile file, int rank) {
-        super(type, file, rank);
+        this.pieceType = type;
+        this.pieceFile = file;
+        this.pieceRank = rank;
         this.firstMove = true;
     }
 
